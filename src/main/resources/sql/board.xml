@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+    <select id="boardSelectList" parameterType="java.util.HashMap" resultType="spring.maven.board.board.BoardDTO">
+        SELECT
+          brd_type,
+          brd_cd,
+          docnum,
+          add_usr_nm,
+          title,
+          contents,
+          attach,
+          del_conf,
+          viewcount
+        FROM board
+        ORDER BY docnum DESC
+    </select>
+</mapper>

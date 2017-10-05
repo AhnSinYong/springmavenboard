@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:http auto-config="true" use-expressions="true">
+        <security:intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')"/>
+
+        <security:access-denied-handler error-page="/403"/>
+
+        <security:form-login
+            login-page="/login"
+            default-target-url="/welcome"
+            authentication-failure-url="/login?error"
+            login-processing-url="/loginS"
+            username-parameter="username"
+            password-parameter="password"
+        />
+
+        <security:logout logout-success-url="/login?logout"/>
+
+        <security:csrf/>
+
+        <security:session-management>
+            <security:concurrency-control max-sessions="1" expired-url="/login_duplicate"/>
+        </security:session-management>
+    </security:http>
+
+    <!--<security:authentication-manager>-->
+        <!--<security:authentication-provider>-->
+            <!--<security:jdbc-user-service data-source-ref="dataSource"-->
+                <!--users-by-username-query="SELECT username, password, enabled FROM users WHERE username=?"-->
+                <!--authorities-by-username-query="SELECT username, role FROM user_roles WHERE username=?"-->
+            <!--/>-->
+        <!--</security:authentication-provider>-->
+    <!--</security:authentication-manager>-->
+    <security:authentication-manager>
+        <security:authentication-provider ref="provider"/>
+    </security:authentication-manager>
+
+    <bean id="provider" class="spring.maven.board.common.CustomAuthenticationProvider"/>
+</beans>
